@@ -23,13 +23,14 @@ class tabularEth {
     this.balance = balance;
   }
 }
+let index = 1;
+let i = 1;
 const baseNetwork = async () => {
   try {
-    let index = 1;
     console.log(`Base Network`);
     for (const address of addressArr) {
       const baseBalance = await getBaseBalance(address);
-      tableEth[index] = new tabularEth(address, baseBalance);
+      tableEth[i] = new tabularEth(address, baseBalance);
       for (const ca of caArr) {
         const cTokenBalance = await getCustomTokenBase(ca, address);
         const { holder, contractAddress, tokenName, balance } = cTokenBalance;
@@ -38,12 +39,16 @@ const baseNetwork = async () => {
         table[index] = new tabular(holder, contractAddress, balance, value);
         index++;
       }
+      i++;
     }
     console.log();
     console.log();
     console.table(tableEth);
     console.table(table);
     table = {};
+    tableEth = {};
+    i = 1;
+    index = 1;
   } catch (error) {
     console.log(error);
   }
